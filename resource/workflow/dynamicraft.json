@@ -1,0 +1,1237 @@
+{
+  "last_node_id": 75,
+  "last_link_id": 133,
+  "nodes": [
+    {
+      "id": 62,
+      "type": "Note",
+      "pos": [
+        1998,
+        145
+      ],
+      "size": {
+        "0": 303.9020080566406,
+        "1": 93.0064697265625
+      },
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "properties": {
+        "text": ""
+      },
+      "widgets_values": [
+        "https://huggingface.co/laion/CLIP-ViT-H-14-laion2B-s32B-b79K/resolve/main/open_clip_pytorch_model.safetensors?download=true\n\n(ComfyUI\\models\\clip_vision)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 61,
+      "type": "Note",
+      "pos": [
+        1639,
+        243
+      ],
+      "size": {
+        "0": 303.9020080566406,
+        "1": 93.0064697265625
+      },
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "properties": {
+        "text": ""
+      },
+      "widgets_values": [
+        "https://huggingface.co/ExponentialML/DynamiCrafterUNet/tree/main\n\n(ComfyUI\\models\\dynamicrafter_models)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 44,
+      "type": "CLIPSetLastLayer",
+      "pos": [
+        1981,
+        792
+      ],
+      "size": {
+        "0": 315,
+        "1": 58
+      },
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 90,
+          "slot_index": 0
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            97,
+            98
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPSetLastLayer"
+      },
+      "widgets_values": [
+        -2
+      ]
+    },
+    {
+      "id": 63,
+      "type": "Note",
+      "pos": [
+        1633,
+        925
+      ],
+      "size": {
+        "0": 303.9020080566406,
+        "1": 93.0064697265625
+      },
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "properties": {
+        "text": ""
+      },
+      "widgets_values": [
+        "https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/text_encoder/model.safetensors?download=true\n\n(ComfyUI\\models\\clip)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 65,
+      "type": "Reroute",
+      "pos": [
+        2477,
+        798
+      ],
+      "size": [
+        75,
+        26
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "",
+          "type": "*",
+          "link": 117
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "VAE",
+          "links": [
+            118
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "showOutputText": false,
+        "horizontal": false
+      }
+    },
+    {
+      "id": 52,
+      "type": "RescaleCFG",
+      "pos": [
+        1990,
+        410
+      ],
+      "size": {
+        "0": 315,
+        "1": 58
+      },
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 101
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            102
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RescaleCFG"
+      },
+      "widgets_values": [
+        0.8
+      ]
+    },
+    {
+      "id": 67,
+      "type": "Reroute",
+      "pos": [
+        2059,
+        59
+      ],
+      "size": [
+        75,
+        26
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "",
+          "type": "*",
+          "link": 128
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "IMAGE",
+          "links": [
+            123
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "showOutputText": false,
+        "horizontal": false
+      }
+    },
+    {
+      "id": 48,
+      "type": "VAEDecode",
+      "pos": [
+        3124,
+        462
+      ],
+      "size": {
+        "0": 210,
+        "1": 46
+      },
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 94
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 118
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            120
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 68,
+      "type": "Note",
+      "pos": [
+        3373,
+        520
+      ],
+      "size": {
+        "0": 230.80711364746094,
+        "1": 107.04103088378906
+      },
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "properties": {
+        "text": ""
+      },
+      "widgets_values": [
+        "node:\nhttps://github.com/kijai/ComfyUI-KJNodes\n(ComfyUI\\custom_nodes)"
+      ],
+      "color": "#c09430",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 53,
+      "type": "VAELoader",
+      "pos": [
+        1990,
+        520
+      ],
+      "size": {
+        "0": 315,
+        "1": 58
+      },
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            104,
+            117
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "vae-ft-mse-840000-ema-pruned.safetensors"
+      ]
+    },
+    {
+      "id": 66,
+      "type": "ColorMatch",
+      "pos": [
+        3379,
+        397
+      ],
+      "size": {
+        "0": 210,
+        "1": 78
+      },
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image_ref",
+          "type": "IMAGE",
+          "link": 123
+        },
+        {
+          "name": "image_target",
+          "type": "IMAGE",
+          "link": 120
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            129
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ColorMatch"
+      },
+      "widgets_values": [
+        "hm-mkl-hm"
+      ]
+    },
+    {
+      "id": 50,
+      "type": "CLIPTextEncode",
+      "pos": [
+        2350,
+        620
+      ],
+      "size": {
+        "0": 210,
+        "1": 96
+      },
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 97
+        },
+        {
+          "name": "text",
+          "type": "STRING",
+          "link": 132,
+          "widget": {
+            "name": "text"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            99
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A group of children exploring a forest, looking excitedly at wild animals ahead, depicted in traditional Chinese animation style. "
+      ]
+    },
+    {
+      "id": 51,
+      "type": "CLIPTextEncode",
+      "pos": [
+        2362,
+        913
+      ],
+      "size": {
+        "0": 210,
+        "1": 96
+      },
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 98
+        },
+        {
+          "name": "text",
+          "type": "STRING",
+          "link": 133,
+          "widget": {
+            "name": "text"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            100
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "lowres, error, cropped, worst quality, low quality, jpeg artifacts, out of frame, watermark, signature，blurry, text"
+      ]
+    },
+    {
+      "id": 45,
+      "type": "CLIPLoader",
+      "pos": [
+        1634,
+        784
+      ],
+      "size": {
+        "0": 315,
+        "1": 82
+      },
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            90
+          ],
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPLoader"
+      },
+      "widgets_values": [
+        "model.safetensors",
+        "stable_diffusion"
+      ]
+    },
+    {
+      "id": 47,
+      "type": "KSampler",
+      "pos": [
+        2770,
+        400
+      ],
+      "size": {
+        "0": 320,
+        "1": 474
+      },
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 92
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 99
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 100
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 93
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            94
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        774827483822852,
+        "fixed",
+        50,
+        7.5,
+        "euler_ancestral",
+        "karras",
+        1
+      ]
+    },
+    {
+      "id": 43,
+      "type": "CLIPVisionLoader",
+      "pos": [
+        1990,
+        300
+      ],
+      "size": {
+        "0": 315,
+        "1": 58
+      },
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "CLIP_VISION",
+          "type": "CLIP_VISION",
+          "links": [
+            88
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPVisionLoader"
+      },
+      "widgets_values": [
+        "open_clip_pytorch_model.safetensors"
+      ]
+    },
+    {
+      "id": 71,
+      "type": "ImageResize+",
+      "pos": [
+        1199,
+        308
+      ],
+      "size": {
+        "0": 315,
+        "1": 218
+      },
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 126
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            127,
+            128
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "links": null,
+          "shape": 3
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageResize+"
+      },
+      "widgets_values": [
+        1024,
+        576,
+        "nearest",
+        true,
+        "always",
+        0
+      ]
+    },
+    {
+      "id": 40,
+      "type": "DynamiCrafterProcessor",
+      "pos": [
+        2350,
+        340
+      ],
+      "size": {
+        "0": 367.79998779296875,
+        "1": 210
+      },
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 102
+        },
+        {
+          "name": "clip_vision",
+          "type": "CLIP_VISION",
+          "link": 88
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 104,
+          "slot_index": 2
+        },
+        {
+          "name": "image_proj_model",
+          "type": "IMAGE_PROJ_MODEL",
+          "link": 89
+        },
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 127
+        }
+      ],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            92
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "empty_latent",
+          "type": "LATENT",
+          "links": [
+            93
+          ],
+          "shape": 3,
+          "slot_index": 1
+        },
+        {
+          "name": "latent_img",
+          "type": "LATENT",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DynamiCrafterProcessor"
+      },
+      "widgets_values": [
+        false,
+        5,
+        16,
+        false
+      ]
+    },
+    {
+      "id": 75,
+      "type": "SDXLPromptStyler",
+      "pos": [
+        1909,
+        979
+      ],
+      "size": {
+        "0": 400,
+        "1": 242.00003051757812
+      },
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "text_positive",
+          "type": "STRING",
+          "links": [
+            132
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "text_negative",
+          "type": "STRING",
+          "links": [
+            133
+          ],
+          "shape": 3,
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SDXLPromptStyler"
+      },
+      "widgets_values": [
+        "A group of children exploring a forest, looking excitedly at wild animals ahead, depicted in traditional Chinese animation style. ",
+        "lowres, error, cropped, worst quality, low quality, jpeg artifacts, out of frame, watermark, signature，blurry, text",
+        "sai-anime",
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "id": 64,
+      "type": "Note",
+      "pos": [
+        1996,
+        626
+      ],
+      "size": {
+        "0": 303.9020080566406,
+        "1": 93.0064697265625
+      },
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "properties": {
+        "text": ""
+      },
+      "widgets_values": [
+        "https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors?download=true\n\n(ComfyUI\\models\\vae)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 39,
+      "type": "DynamiCrafterLoader",
+      "pos": [
+        1614,
+        516
+      ],
+      "size": {
+        "0": 315,
+        "1": 102
+      },
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            101
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "image_proj_model",
+          "type": "IMAGE_PROJ_MODEL",
+          "links": [
+            89
+          ],
+          "shape": 3,
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DynamiCrafterLoader"
+      },
+      "widgets_values": [
+        "dynamicrafter_unet_1024.safetensors"
+      ]
+    },
+    {
+      "id": 73,
+      "type": "GetImageRangeFromBatch",
+      "pos": [
+        2934,
+        1060
+      ],
+      "size": {
+        "0": 315,
+        "1": 82
+      },
+      "flags": {},
+      "order": 22,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 129
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            130
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "GetImageRangeFromBatch"
+      },
+      "widgets_values": [
+        0,
+        15
+      ]
+    },
+    {
+      "id": 74,
+      "type": "RIFE VFI",
+      "pos": [
+        2969,
+        1271
+      ],
+      "size": {
+        "0": 443.4000244140625,
+        "1": 198
+      },
+      "flags": {},
+      "order": 23,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "frames",
+          "type": "IMAGE",
+          "link": 130
+        },
+        {
+          "name": "optional_interpolation_states",
+          "type": "INTERPOLATION_STATES",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            131
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RIFE VFI"
+      },
+      "widgets_values": [
+        "rife49.pth",
+        10,
+        4,
+        true,
+        true,
+        1
+      ]
+    },
+    {
+      "id": 49,
+      "type": "VHS_VideoCombine",
+      "pos": [
+        3641,
+        322
+      ],
+      "size": [
+        1005.6901245117188,
+        290
+      ],
+      "flags": {},
+      "order": 24,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 131
+        },
+        {
+          "name": "audio",
+          "type": "VHS_AUDIO",
+          "link": null
+        },
+        {
+          "name": "meta_batch",
+          "type": "VHS_BatchManager",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Filenames",
+          "type": "VHS_FILENAMES",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VHS_VideoCombine"
+      },
+      "widgets_values": {
+        "frame_rate": 16,
+        "loop_count": 0,
+        "filename_prefix": "DynamiCrafter",
+        "format": "video/h265-mp4",
+        "pix_fmt": "yuv420p10le",
+        "crf": 22,
+        "save_metadata": false,
+        "pingpong": false,
+        "save_output": true,
+        "videopreview": {
+          "hidden": false,
+          "paused": false,
+          "params": {
+            "filename": "DynamiCrafter_00037.mp4",
+            "subfolder": "",
+            "type": "output",
+            "format": "video/h265-mp4"
+          }
+        }
+      }
+    },
+    {
+      "id": 70,
+      "type": "LoadImage",
+      "pos": [
+        1044,
+        667
+      ],
+      "size": {
+        "0": 315,
+        "1": 314
+      },
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            126
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "ComfyUI_temp_xirka_00003_.png",
+        "image"
+      ]
+    }
+  ],
+  "links": [
+    [
+      88,
+      43,
+      0,
+      40,
+      1,
+      "CLIP_VISION"
+    ],
+    [
+      89,
+      39,
+      1,
+      40,
+      3,
+      "IMAGE_PROJ_MODEL"
+    ],
+    [
+      90,
+      45,
+      0,
+      44,
+      0,
+      "CLIP"
+    ],
+    [
+      92,
+      40,
+      0,
+      47,
+      0,
+      "MODEL"
+    ],
+    [
+      93,
+      40,
+      1,
+      47,
+      3,
+      "LATENT"
+    ],
+    [
+      94,
+      47,
+      0,
+      48,
+      0,
+      "LATENT"
+    ],
+    [
+      97,
+      44,
+      0,
+      50,
+      0,
+      "CLIP"
+    ],
+    [
+      98,
+      44,
+      0,
+      51,
+      0,
+      "CLIP"
+    ],
+    [
+      99,
+      50,
+      0,
+      47,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      100,
+      51,
+      0,
+      47,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      101,
+      39,
+      0,
+      52,
+      0,
+      "MODEL"
+    ],
+    [
+      102,
+      52,
+      0,
+      40,
+      0,
+      "MODEL"
+    ],
+    [
+      104,
+      53,
+      0,
+      40,
+      2,
+      "VAE"
+    ],
+    [
+      117,
+      53,
+      0,
+      65,
+      0,
+      "*"
+    ],
+    [
+      118,
+      65,
+      0,
+      48,
+      1,
+      "VAE"
+    ],
+    [
+      120,
+      48,
+      0,
+      66,
+      1,
+      "IMAGE"
+    ],
+    [
+      123,
+      67,
+      0,
+      66,
+      0,
+      "IMAGE"
+    ],
+    [
+      126,
+      70,
+      0,
+      71,
+      0,
+      "IMAGE"
+    ],
+    [
+      127,
+      71,
+      0,
+      40,
+      4,
+      "IMAGE"
+    ],
+    [
+      128,
+      71,
+      0,
+      67,
+      0,
+      "*"
+    ],
+    [
+      129,
+      66,
+      0,
+      73,
+      0,
+      "IMAGE"
+    ],
+    [
+      130,
+      73,
+      0,
+      74,
+      0,
+      "IMAGE"
+    ],
+    [
+      131,
+      74,
+      0,
+      49,
+      0,
+      "IMAGE"
+    ],
+    [
+      132,
+      75,
+      0,
+      50,
+      1,
+      "STRING"
+    ],
+    [
+      133,
+      75,
+      1,
+      51,
+      1,
+      "STRING"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.7627768444385465,
+      "offset": {
+        "0": -1354.6452833544367,
+        "1": 86.02097640303907
+      }
+    }
+  },
+  "version": 0.4
+}

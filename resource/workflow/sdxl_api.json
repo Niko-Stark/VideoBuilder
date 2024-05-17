@@ -1,0 +1,236 @@
+{
+  "56": {
+    "inputs": {
+      "add_noise": "enable",
+      "noise_seed": 328105443188394,
+      "steps": 40,
+      "cfg": 8,
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "start_at_step": 0,
+      "end_at_step": 30,
+      "return_with_leftover_noise": "enable",
+      "model": [
+        "61",
+        0
+      ],
+      "positive": [
+        "62",
+        0
+      ],
+      "negative": [
+        "64",
+        0
+      ],
+      "latent_image": [
+        "68",
+        0
+      ]
+    },
+    "class_type": "KSamplerAdvanced",
+    "_meta": {
+      "title": "KSampler (Advanced)"
+    }
+  },
+  "58": {
+    "inputs": {
+      "add_noise": "disable",
+      "noise_seed": 209057978356768,
+      "steps": 40,
+      "cfg": 8,
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "start_at_step": 30,
+      "end_at_step": 10000,
+      "return_with_leftover_noise": "disable",
+      "model": [
+        "60",
+        0
+      ],
+      "positive": [
+        "63",
+        0
+      ],
+      "negative": [
+        "65",
+        0
+      ],
+      "latent_image": [
+        "56",
+        0
+      ]
+    },
+    "class_type": "KSamplerAdvanced",
+    "_meta": {
+      "title": "KSampler (Advanced)"
+    }
+  },
+  "60": {
+    "inputs": {
+      "ckpt_name": "sd_xl_refiner_1.0.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "refiner模型"
+    }
+  },
+  "61": {
+    "inputs": {
+      "ckpt_name": "sd_xl_base_1.0.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "base模型"
+    }
+  },
+  "62": {
+    "inputs": {
+      "text": [
+        "72",
+        0
+      ],
+      "clip": [
+        "61",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "正面提示词"
+    }
+  },
+  "63": {
+    "inputs": {
+      "text": [
+        "72",
+        0
+      ],
+      "clip": [
+        "60",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "正面提示词"
+    }
+  },
+  "64": {
+    "inputs": {
+      "text": [
+        "72",
+        1
+      ],
+      "clip": [
+        "61",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "负面提示词"
+    }
+  },
+  "65": {
+    "inputs": {
+      "text": [
+        "72",
+        1
+      ],
+      "clip": [
+        "60",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "负面提示词"
+    }
+  },
+  "68": {
+    "inputs": {
+      "width": 1024,
+      "height": 576,
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Empty Latent Image"
+    }
+  },
+  "69": {
+    "inputs": {
+      "samples": [
+        "58",
+        0
+      ],
+      "vae": [
+        "70",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "70": {
+    "inputs": {
+      "vae_name": "sdxl_vae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "71": {
+    "inputs": {
+      "images": [
+        "69",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "72": {
+    "inputs": {
+      "text_positive": "A group of children exploring a forest, looking excitedly at wild animals ahead, depicted in traditional Chinese animation style. ",
+      "text_negative": "lowres, error, cropped, worst quality, low quality, jpeg artifacts, out of frame, watermark, signature，blurry, text",
+      "style": "sai-comic book",
+      "log_prompt": false,
+      "style_positive": true,
+      "style_negative": true
+    },
+    "class_type": "SDXLPromptStyler",
+    "_meta": {
+      "title": "SDXL Prompt Styler"
+    }
+  },
+  "77": {
+    "inputs": {
+      "text": [
+        "72",
+        0
+      ]
+    },
+    "class_type": "ShowText|pysssss",
+    "_meta": {
+      "title": "Show Text 🐍"
+    }
+  },
+  "78": {
+    "inputs": {
+      "text": [
+        "72",
+        1
+      ]
+    },
+    "class_type": "ShowText|pysssss",
+    "_meta": {
+      "title": "Show Text 🐍"
+    }
+  }
+}

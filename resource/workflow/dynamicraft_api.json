@@ -1,0 +1,287 @@
+{
+  "39": {
+    "inputs": {
+      "model_path": "dynamicrafter_unet_1024.safetensors"
+    },
+    "class_type": "DynamiCrafterLoader",
+    "_meta": {
+      "title": "Load a DynamiCrafter Checkpoint"
+    }
+  },
+  "40": {
+    "inputs": {
+      "use_interpolate": false,
+      "fps": 5,
+      "frames": 16,
+      "scale_latents": false,
+      "model": [
+        "52",
+        0
+      ],
+      "clip_vision": [
+        "43",
+        0
+      ],
+      "vae": [
+        "53",
+        0
+      ],
+      "image_proj_model": [
+        "39",
+        1
+      ],
+      "images": [
+        "71",
+        0
+      ]
+    },
+    "class_type": "DynamiCrafterProcessor",
+    "_meta": {
+      "title": "Apply DynamiCrafter"
+    }
+  },
+  "43": {
+    "inputs": {
+      "clip_name": "open_clip_pytorch_model.safetensors"
+    },
+    "class_type": "CLIPVisionLoader",
+    "_meta": {
+      "title": "Load CLIP Vision"
+    }
+  },
+  "44": {
+    "inputs": {
+      "stop_at_clip_layer": -2,
+      "clip": [
+        "45",
+        0
+      ]
+    },
+    "class_type": "CLIPSetLastLayer",
+    "_meta": {
+      "title": "CLIP Set Last Layer"
+    }
+  },
+  "45": {
+    "inputs": {
+      "clip_name": "model.safetensors",
+      "type": "stable_diffusion"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "Load CLIP"
+    }
+  },
+  "47": {
+    "inputs": {
+      "seed": 774827483822852,
+      "steps": 50,
+      "cfg": 7.5,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "40",
+        0
+      ],
+      "positive": [
+        "50",
+        0
+      ],
+      "negative": [
+        "51",
+        0
+      ],
+      "latent_image": [
+        "40",
+        1
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "48": {
+    "inputs": {
+      "samples": [
+        "47",
+        0
+      ],
+      "vae": [
+        "53",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "49": {
+    "inputs": {
+      "frame_rate": 16,
+      "loop_count": 0,
+      "filename_prefix": "DynamiCrafter",
+      "format": "video/h265-mp4",
+      "pix_fmt": "yuv420p10le",
+      "crf": 22,
+      "save_metadata": false,
+      "pingpong": false,
+      "save_output": true,
+      "images": [
+        "74",
+        0
+      ]
+    },
+    "class_type": "VHS_VideoCombine",
+    "_meta": {
+      "title": "Video Combine 🎥🅥🅗🅢"
+    }
+  },
+  "50": {
+    "inputs": {
+      "text": [
+        "75",
+        0
+      ],
+      "clip": [
+        "44",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "51": {
+    "inputs": {
+      "text": [
+        "75",
+        1
+      ],
+      "clip": [
+        "44",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "52": {
+    "inputs": {
+      "multiplier": 0.8,
+      "model": [
+        "39",
+        0
+      ]
+    },
+    "class_type": "RescaleCFG",
+    "_meta": {
+      "title": "RescaleCFG"
+    }
+  },
+  "53": {
+    "inputs": {
+      "vae_name": "vae-ft-mse-840000-ema-pruned.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "66": {
+    "inputs": {
+      "method": "hm-mkl-hm",
+      "image_ref": [
+        "71",
+        0
+      ],
+      "image_target": [
+        "48",
+        0
+      ]
+    },
+    "class_type": "ColorMatch",
+    "_meta": {
+      "title": "Color Match"
+    }
+  },
+  "70": {
+    "inputs": {
+      "image": "ComfyUI_temp_xirka_00003_.png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "71": {
+    "inputs": {
+      "width": 1024,
+      "height": 576,
+      "interpolation": "nearest",
+      "keep_proportion": true,
+      "condition": "always",
+      "multiple_of": 0,
+      "image": [
+        "70",
+        0
+      ]
+    },
+    "class_type": "ImageResize+",
+    "_meta": {
+      "title": "🔧 Image Resize"
+    }
+  },
+  "73": {
+    "inputs": {
+      "start_index": 0,
+      "num_frames": 15,
+      "images": [
+        "66",
+        0
+      ]
+    },
+    "class_type": "GetImageRangeFromBatch",
+    "_meta": {
+      "title": "Get Image Range From Batch"
+    }
+  },
+  "74": {
+    "inputs": {
+      "ckpt_name": "rife49.pth",
+      "clear_cache_after_n_frames": 10,
+      "multiplier": 4,
+      "fast_mode": true,
+      "ensemble": true,
+      "scale_factor": 1,
+      "frames": [
+        "73",
+        0
+      ]
+    },
+    "class_type": "RIFE VFI",
+    "_meta": {
+      "title": "RIFE VFI (recommend rife47 and rife49)"
+    }
+  },
+  "75": {
+    "inputs": {
+      "text_positive": "A group of children exploring a forest, looking excitedly at wild animals ahead, depicted in traditional Chinese animation style. ",
+      "text_negative": "lowres, error, cropped, worst quality, low quality, jpeg artifacts, out of frame, watermark, signature，blurry, text",
+      "style": "sai-anime",
+      "log_prompt": false,
+      "style_positive": true,
+      "style_negative": true
+    },
+    "class_type": "SDXLPromptStyler",
+    "_meta": {
+      "title": "SDXL Prompt Styler"
+    }
+  }
+}
