@@ -38,29 +38,9 @@ def _generate_response(prompt: str) -> str:
 
 
 
-def generate_script(video_subject: str, language: str = "", paragraph_number: int = 1) -> str:
-#     prompt = f"""
-# # Role: Video Script Generator
-
-# ## Goals:
-# Generate a script for a video, depending on the subject of the video.
-
-# ## Constrains:
-# 1. the script is to be returned as a string with the specified number of paragraphs.
-# 2. do not under any circumstance reference this prompt in your response.
-# 3. get straight to the point, don't start with unnecessary things like, "welcome to this video".
-# 4. you must not include any type of markdown or formatting in the script, never use a title.
-# 5. only return the raw content of the script.
-# 6. do not include "voiceover", "narrator" or similar indicators of what should be spoken at the beginning of each paragraph or line.
-# 7. you must not mention the prompt, or anything about the script itself. also, never talk about the amount of paragraphs or lines. just write the script.
-# 8. respond in the same language as the video subject.
-
-# # Initialization:
-# - video subject: {video_subject}
-# - number of paragraphs: {paragraph_number}
-# """.strip()
+def generate_script(video_subject: str, language: str = "Chinese", storyboard_number: int = 5) -> str:
     prompt=f"""
-你是一个专业导演。请帮我设计一个{video_subject}的视频。视频一共20秒，大约5个镜头左右。请先设计出分镜的内容描述以及与每个分镜所搭配的字幕内容，每个分镜搭配的字幕内容请用中文给出。之后再根据分镜的内容描述生成每个分镜的画面描述，要尽可能详细的描述画面内容。
+你是一个专业导演。请帮我设计一个关于{video_subject}的视频脚本，一共{storyboard_number}个分镜，每个分镜大约3到4秒，在一个分镜中，我希望只有一个镜头，不要有镜头转换，请先设计出每一个分镜的字幕内容，根据字幕内容来设计分镜的画面，画面的描述应当清晰。
 
 按照如下josn格式进行输出：
 {{
@@ -77,38 +57,19 @@ def generate_script(video_subject: str, language: str = "", paragraph_number: in
     if language:
         prompt += f"\n- language: {language}"
 
-    final_script = ""
     # logger.info(f"subject: {video_subject}")
     # logger.debug(f"prompt: \n{prompt}")
     response = _generate_response(prompt=prompt)
-
-    # Return the generated script
-    if response:
-        # Clean the script
-        # Remove asterisks, hashes
-        response = response.replace("*", "")
-        response = response.replace("#", "")
-
-        # Remove markdown syntax
-        response = re.sub(r"\[.*\]", "", response)
-        response = re.sub(r"\(.*\)", "", response)
-
-        # Split the script into paragraphs
-        paragraphs = response.split("\n\n")
-
-        # Select the specified number of paragraphs
-        selected_paragraphs = paragraphs[:paragraph_number]
-
-        # Join the selected paragraphs into a single string
-        final_script = "\n\n".join(selected_paragraphs)
-
-        # Print to console the number of paragraphs used
-        # logger.info(f"number of paragraphs used: {len(selected_paragraphs)}")
-    else:
-        logging.error("gpt returned an empty response")
-
-    # logger.success(f"completed: \n{final_script}")
-    return final_script
+    response = response.strip()
+    try:
+        start = response.find('{')
+        end = response.rfind('}')
+        text = response[start:end+1]
+        json_object = json.loads(text)
+    except ValueError as e:
+        print(str(e))
+        return ""
+    return text
 
 def generate_prompt(stortboard: str) -> str:
     prompt=f"""你来充当一位有艺术气息的Stable Diffusion prompt 助理
@@ -122,6 +83,7 @@ prompt的概念
 - prompt 用来描述图像，由普通常见的单词构成，使用英文半角","做为分隔符。
 - negative prompt用来描述你不想在生成的图像中出现的内容。
 - 以","分隔的每个单词或词组称为 tag。所以prompt和negative prompt是系列由","分隔的tag组成的。
+- 需要根据画面描述来决定一个tag是属于prompt还是negative prompt
 
 () 和 [] 语法
 调整关键字强度的等效方法是使用 () 和 []。
@@ -134,15 +96,17 @@ Prompt 格式要求
 
 1. prompt 要求
 - 你输出的 Stable Diffusion prompt 以“**Prompt:**”开头。
-- prompt 内容包含画面主体、材质、附加细节、图像质量、艺术风格、色彩色调、灯光等部分，但你输出的 prompt 不能分段，例如类似"medium:"这样的分段描述是不需要的，也不能包含":"和"."。
+- prompt 内容包含画面主体、材质、附加细节、图像质量、艺术风格、色彩色调、灯光等部分，但你输出的 prompt 不能分段，也不能包含":"和"."。
 - 画面主体：简短的英文描述画面主体, 如 A girl in a garden，主体细节概括（主体可以是人、事、物、景）画面核心内容。这部分根据我每次给你的主题来生成。你可以添加更多主题相关的合理的细节。
-- 对于人物主题，你必须描述人物的眼睛、鼻子、嘴唇，例如'beautiful detailed eyes,beautiful detailed lips,extremely detailed eyes and face,longeyelashes'，以免Stable Diffusion随机生成变形的面部五官，这点非常重要。你还可以描述人物的外表、情绪、衣服、姿势、视角、动作、背景等。人物属性中，1girl表示一个女孩，2girls表示两个女孩。
-- 材质：用来制作艺术品的材料。 例如：插图、油画、3D 渲染和摄影。 Medium 有很强的效果，因为一个关键字就可以极大地改变风格。
+- 对于人物主题，你必须描述人物的眼睛、鼻子、嘴唇，例如'beautiful detailed eyes,beautiful detailed lips,extremely detailed eyes and face,longeyelashes'，以免Stable Diffusion随机生成变形的面部五官，这点非常重要。另外人物主题常见的negative prompt包括：extra fingers, fused fingers, too many fingers, mutated hands, poorly drawn face, deformed, missing arms, missing legs, mutation, mutilated, blurry, hermaphrodite, bad proportions, malformed limbs, extra limbs 等等，可以根据画面描述挑选合适的tag放进negative prompt
+- 对于人物主题，你还可以描述人物的外表、情绪、衣服、姿势、视角、动作、背景等。
+- 材质：用来制作艺术品的材料。 例如：插图、油画、3D 渲染和摄影，有很强的效果，因为一个关键字就可以极大地改变风格。
 - 附加细节：画面场景细节，或人物细节，描述画面细节内容，让图像看起来更充实和合理。这部分是可选的，要注意画面的整体和谐，不能与主题冲突。
-- 图像质量：这部分内容开头永远要加上“(best quality,4k,8k,highres,masterpiece:1.2),ultra-detailed,(realistic,photorealistic,photo-realistic:1.37)”， 这是高质量的标志。其它常用的提高质量的tag还有，你可以根据主题的需求添加：HDR,UHD,studio lighting,ultra-fine painting,sharp focus,physically-based rendering,extreme detail description,professional,vivid colors,bokeh。
+- 图像质量：这部分内容开头永远要加上“(best quality,4k,8k,highres,masterpiece:1.2),ultra-detailed”， 这是高质量的标志。其它常用的提高质量的tag还有，你可以根据主题的需求添加：HDR,UHD,studio lighting,ultra-fine painting,sharp focus,physically-based rendering,extreme detail description,professional,vivid colors,bokeh。
 - 艺术风格：这部分描述图像的风格。加入恰当的艺术风格，能提升生成的图像效果。常用的艺术风格例如：portraits,landscape,horror,anime,sci-fi,photography,concept artists等。
 - 色彩色调：颜色，通过添加颜色来控制画面的整体颜色。
 - 灯光：整体画面的光线效果。
+- 如果画面对背景有要求，可通过设置背景提示词，比如：cityscape, airport background, beach background, space background, white background, beige background, gradient background, simple background, blurry background, backlighting, drop shadow, Fireworks, lawn, coffee house, cherry blossoms, shooting star, lsekai cityscape, 等等
 
 限制：
 - tag 内容用英语单词或短语来描述，并不局限于我给你的单词。注意只能包含关键词或词组。
@@ -151,13 +115,13 @@ Prompt 格式要求
 - tag不要带引号("")。
 - 使用英文半角","做分隔符。
 - tag 按重要性从高到低的顺序排列。
-- 我给你的主题可能是用中文描述，你给出的prompt和negative prompt只用英文。
+- 我给你的主题可能是用中文描述，你给出的prompt 和negative prompt 只能用英文。
 
 画面描述：{stortboard}
 """.strip()
     prompt += "\n- language: English"
 
-    final_prompt = ""
+    final_prompt = []
     # logger.info(f"subject: {video_subject}")
     # logger.debug(f"prompt: \n{prompt}")
     response = _generate_response(prompt=prompt)
@@ -169,20 +133,49 @@ Prompt 格式要求
         response = response.replace("*", "")
         response = response.replace("#", "")
 
-        # Remove markdown syntax
-        response = re.sub(r"\[.*\]", "", response)
-        response = re.sub(r"\(.*\)", "", response)
+        # Split the prompt into paragraphs
+        paragraphs = response.split("Negative Prompt:")
+        final_prompt.append(paragraphs[0].replace("Prompt:", "").strip())
+        final_prompt.append(paragraphs[1].strip()if len(paragraphs) > 1 else "")
 
-        # Split the script into paragraphs
-        paragraphs = response.split("\n\n")
-
-        # Join the selected paragraphs into a single string
-        final_prompt = "\n\n".join(paragraphs)
 
         # Print to console the number of paragraphs used
         # logger.info(f"number of paragraphs used: {len(selected_paragraphs)}")
-    else:
-        logging.error("gpt returned an empty response")
 
     # logger.success(f"completed: \n{final_script}")
     return final_prompt
+
+def generate_dynamicraft(imagedescription: str) -> str:
+    prompt=f"""你来充当一位有艺术气息的 prompt 助理
+
+我用自然语言告诉你画面描述，你的任务是根据这个画面描述，生成prompt，来让DynamiCraft可以通过图像生成视频。
+
+DynamiCraft是一款利用深度学习的图生视频模型，支持通过使用 prompt 和图像来产生视频。
+
+prompt的概念
+- prompt 主要描述画面如何运动,
+- prompt 通常是简短的英文来描述视频中的内容
+- prompt 通常很少涉及比较具体的物品
+
+限制：
+- prompt 内容用英语来描述
+- prompt 内容比较简短，单词数量限制在40个以内。
+- 我给你的画面描述可能是用中文描述，你给出的prompt 只能用英文。
+
+画面描述：{imagedescription}
+""".strip()
+    prompt += "\n- language: English"
+
+    # logger.info(f"subject: {video_subject}")
+    # logger.debug(f"prompt: \n{prompt}")
+    response = _generate_response(prompt=prompt)
+
+    # Return the generated script
+    if response:
+        # Clean the script
+        # Remove asterisks, hashes
+        response = response.replace("*", "")
+        response = response.replace("#", "")
+
+    # logger.success(f"completed: \n{final_script}")
+    return response

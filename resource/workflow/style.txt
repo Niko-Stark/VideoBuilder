@@ -1,0 +1,14 @@
+artstyle-steampunk
+artstyle-abstract
+futuristic-sci-fi
+game-mario
+photo-hdr
+photo-tilt-shift
+sai-analog film
+sai-anime
+sai-cinematic
+sai-comic book
+sai-digital art
+sai-fantasy art
+sai-line art
+sai-neonpunk

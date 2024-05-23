@@ -75,7 +75,7 @@
   "47": {
     "inputs": {
       "seed": 774827483822852,
-      "steps": 50,
+      "steps": 25,
       "cfg": 7.5,
       "sampler_name": "euler_ancestral",
       "scheduler": "karras",
@@ -272,7 +272,7 @@
   },
   "75": {
     "inputs": {
-      "text_positive": "A group of children exploring a forest, looking excitedly at wild animals ahead, depicted in traditional Chinese animation style. ",
+      "text_positive": "",
       "text_negative": "lowres, error, cropped, worst quality, low quality, jpeg artifacts, out of frame, watermark, signature，blurry, text",
       "style": "sai-anime",
       "log_prompt": false,

@@ -1,27 +1,25 @@
-script_data = {
-    "分镜1": {
-        "字幕内容": "蔚蓝深邃，海洋的呼吸",
-        "画面描述": "镜头缓缓拉近一片清澈见底的海面，阳光穿透水面，光线在水中舞蹈，珊瑚礁色彩斑斓，小鱼在其间穿梭嬉戏，展现出一幅生机勃勃的海底世界景象。"
-    },
-    "分镜2": {
-        "字幕内容": "塑料入侵，美丽的哀歌",
-        "画面描述": "画面切换至漂浮的塑料袋、饮料瓶等垃圾，它们随着海浪起伏，与刚才的美景形成鲜明对比。一只海龟试图穿过这些垃圾，表情显得困惑和无助。"
-    },
-    "分镜3": {
-        "字幕内容": "每一份力量，都是希望之光",
-        "画面描述": "转到一组志愿者在海滩上捡拾垃圾，他们弯腰、微笑，手提垃圾袋，身后是逐渐干净的沙滩。天空湛蓝，阳光照耀在他们汗湿的脸上，传递出积极向上的氛围。"
-    },
-    "分镜4": {
-        "字幕内容": "你的选择，决定海洋的未来",
-        "画面描述": "快速剪辑日常生活场景，如拒绝一次性塑料吸管、使用可重复使用的水瓶、参与海滩清洁活动等环保行为。画面温馨而鼓舞人心，强调个人行动的重要性。"
-    },
-    "分镜5": {
-        "字幕内容": "保护海洋，从我做起，此刻开始",
-        "画面描述": "最后镜头回到广阔的海面，海水平静如初，一群海豚欢快地跳跃在波浪之上，背景音乐渐强，画面渐渐淡出，只留下一行字幕悬于中央，鼓励观众行动起来。整个画面充满希望，寓意着只要我们共同努力，海洋的美丽可以被守护。"
-    }
-}
+from app.services.task import merge_voice_2_video
+from app.services.state import StepProgress
+from app.utils import utils
+import os
+data = {}
+data["text"] = "测试"
+data["voice_volume"] = 0.5
+data["subtitle_enabled"] = True
+full_path = os.path.join(utils.font_dir(),"STHeitiLight.ttc")
 
-script_list = script_data.values()
-for i,value in enumerate(script_list):
-    value["分镜"]=i
-print(script_list)
+data["font_name"] = full_path.replace("\\", "/")
+data["subtitle_position"] = "bottom"
+data["text_fore_color"] = "#FFFFFF"
+data["font_size"] = 100
+data["stroke_color"] = "#000000"
+data["stroke_width"] = 6
+
+print(data)
+data = utils.dic_remove_item(data,2)
+print(data)
+# from app.services import storyboard
+# from app.services import video
+# test_dir = ".\\test"
+# storyboard_dir = ".\\test\\ComfyUI_temp_snajd_00007_.png"
+# video.video_creator(test_dir,storyboard_dir,StepProgress(weight=1))

@@ -1,12 +1,14 @@
 import io
 import json
 from PIL import Image
-from moviepy.editor import VideoFileClip
 import urllib
 import uuid
 import websocket
 import os
 from requests_toolbelt import MultipartEncoder
+
+from app.services.state import StepProgress
+from app.utils import utils
 
 #todo 配置文件获取url
 def open_websocket_connection():
@@ -39,18 +41,17 @@ def get_image(filename, subfolder, folder_type, server_address):
     with urllib.request.urlopen("http://{}/view?{}".format(server_address, url_values)) as response:
         return response.read()
     
-def get_images(prompt_id, server_address,root_path):
+def get_images(prompt_id, server_address,directory):
     output_images = []
 
     history = get_history(prompt_id, server_address)[prompt_id]
+    # print(history)
     for node_id in history['outputs']:
         node_output = history['outputs'][node_id]
         output_data = {}
         if 'images' in node_output:
             for image in node_output['images']:
                 image_data = get_image(image['filename'], image['subfolder'], image['type'], server_address)
-                directory = os.path.join(root_path, 'output','image')
-                os.makedirs(directory, exist_ok=True)
                 image_file = Image.open(io.BytesIO(image_data))
                 image_file.save(os.path.join(directory, image['filename']))
                 output_data['file_name'] = image['filename']
@@ -58,7 +59,8 @@ def get_images(prompt_id, server_address,root_path):
                 output_images.append(output_data)
 
     return output_images
-def upload_image(input_path, filename,server_address, image_type="input", overwrite=True):
+def upload_image(input_path,server_address, image_type="input", overwrite=True):
+    filename = os.path.basename(input_path)
     with open(input_path, 'rb') as file:
         multipart_data = MultipartEncoder(
             fields= {
@@ -80,18 +82,17 @@ def get_video(filename, subfolder, folder_type, server_address):
     with urllib.request.urlopen("http://{}/view?{}".format(server_address, url_values)) as response:
         return response.read()
     
-def get_videos(prompt_id, server_address,root_path):
+def get_videos(prompt_id, server_address,directory):
     output_videos = []
 
     history = get_history(prompt_id, server_address)[prompt_id]
+    # print(history)
     for node_id in history['outputs']:
         node_output = history['outputs'][node_id]
         output_data = {}
         if 'gifs' in node_output:
             for video in node_output['gifs']:
                 video_data = get_video(video['filename'], video['subfolder'], video['type'], server_address)
-                directory = os.path.join(root_path, 'output','video')
-                os.makedirs(directory, exist_ok=True)
                 output_file_path = os.path.join(directory,video['filename'])
                 with open(output_file_path, "wb") as file:
                     file.write(video_data)
@@ -108,10 +109,10 @@ def queue_prompt(prompt, client_id, server_address):
     req = urllib.request.Request("http://{}/prompt".format(server_address), data=data, headers=headers)
     return json.loads(urllib.request.urlopen(req).read())
 
-def track_progress(prompt, ws, prompt_id):
+def track_progress(prompt, ws, prompt_id,progress:StepProgress):
     node_ids = list(prompt.keys())
     finished_nodes = []
-
+    finished_step = 0
     while True:
         out = ws.recv()
         if isinstance(out, str):
@@ -119,41 +120,45 @@ def track_progress(prompt, ws, prompt_id):
         if message['type'] == 'progress':
             data = message['data']
             current_step = data['value']
-            print('In K-Sampler -> Step: ', current_step, ' of: ', data['max'])
+            progress.update_progress(len(finished_nodes)+finished_step+current_step)
+            if(current_step ==  data['max']):
+                finished_step += data['max']
         if message['type'] == 'execution_cached':
             data = message['data']
             for itm in data['nodes']:
                 if itm not in finished_nodes:
                     finished_nodes.append(itm)
                     print('Progess: ', len(finished_nodes), '/', len(node_ids), ' Tasks done')
+                    progress.update_progress(len(finished_nodes)+finished_step)
         if message['type'] == 'executing':
             data = message['data']
             if data['node'] not in finished_nodes:
                 finished_nodes.append(data['node'])
                 print('Progess: ', len(finished_nodes), '/', len(node_ids), ' Tasks done')
+                progress.update_progress(len(finished_nodes)+finished_step)
             if data['node'] is None and data['prompt_id'] == prompt_id:
                 break #Execution is done
         else:
             continue
     return
 
-def generate_image_by_prompt(prompt,root_path):
+def generate_image_by_prompt(prompt,progress:StepProgress,directory):
     try:
         ws, server_address, client_id = open_websocket_connection()
         prompt_id = queue_prompt(prompt, client_id, server_address)['prompt_id']
-        track_progress(prompt, ws, prompt_id)
-        images = get_images(prompt_id, server_address,root_path)
+        track_progress(prompt, ws, prompt_id,progress)
+        images = get_images(prompt_id, server_address,directory)
         return images
     finally:
         ws.close()
 
-def generate_video_by_image(inputpath,filename,prompt,root_path):
+def generate_video_by_image(inputpath,prompt,progress,directory):
     try:
         ws, server_address, client_id = open_websocket_connection()
-        upload_image(inputpath, filename,server_address)
+        upload_image(inputpath,server_address)
         prompt_id = queue_prompt(prompt, client_id, server_address)['prompt_id']
-        track_progress(prompt, ws, prompt_id)
-        videos = get_videos(prompt_id, server_address,root_path)
+        track_progress(prompt, ws, prompt_id,progress)
+        videos = get_videos(prompt_id, server_address,directory)
         return videos
     finally:
         ws.close()

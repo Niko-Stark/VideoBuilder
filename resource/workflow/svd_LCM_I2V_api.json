@@ -1,0 +1,145 @@
+{
+  "56": {
+    "inputs": {
+      "width": 1024,
+      "height": 576,
+      "interpolation": "lanczos",
+      "keep_proportion": false,
+      "condition": "always",
+      "multiple_of": 0,
+      "image": [
+        "67",
+        0
+      ]
+    },
+    "class_type": "ImageResize+",
+    "_meta": {
+      "title": "🔧 Image Resize"
+    }
+  },
+  "58": {
+    "inputs": {
+      "ckpt_name": "AnimateLCM-SVD-xt-1-1_fp16_comfy.safetensors"
+    },
+    "class_type": "ImageOnlyCheckpointLoader",
+    "_meta": {
+      "title": "Image Only Checkpoint Loader (img2vid model)"
+    }
+  },
+  "59": {
+    "inputs": {
+      "min_cfg": 1,
+      "model": [
+        "58",
+        0
+      ]
+    },
+    "class_type": "VideoLinearCFGGuidance",
+    "_meta": {
+      "title": "VideoLinearCFGGuidance"
+    }
+  },
+  "60": {
+    "inputs": {
+      "width": 1024,
+      "height": 576,
+      "video_frames": 24,
+      "motion_bucket_id": 68,
+      "fps": 6,
+      "augmentation_level": 0.07,
+      "clip_vision": [
+        "58",
+        1
+      ],
+      "init_image": [
+        "56",
+        0
+      ],
+      "vae": [
+        "58",
+        2
+      ]
+    },
+    "class_type": "SVD_img2vid_Conditioning",
+    "_meta": {
+      "title": "SVD_img2vid_Conditioning"
+    }
+  },
+  "61": {
+    "inputs": {
+      "seed": 840104403204572,
+      "steps": 10,
+      "cfg": 2,
+      "sampler_name": "lcm",
+      "scheduler": "sgm_uniform",
+      "denoise": 1,
+      "model": [
+        "59",
+        0
+      ],
+      "positive": [
+        "60",
+        0
+      ],
+      "negative": [
+        "60",
+        1
+      ],
+      "latent_image": [
+        "60",
+        2
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "62": {
+    "inputs": {
+      "samples": [
+        "61",
+        0
+      ],
+      "vae": [
+        "58",
+        2
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "63": {
+    "inputs": {
+      "frame_rate": 6,
+      "loop_count": 0,
+      "filename_prefix": "AnimateLCMSVD",
+      "format": "video/h264-mp4",
+      "pix_fmt": "yuv420p",
+      "crf": 19,
+      "save_metadata": true,
+      "pingpong": false,
+      "save_output": true,
+      "images": [
+        "62",
+        0
+      ]
+    },
+    "class_type": "VHS_VideoCombine",
+    "_meta": {
+      "title": "Video Combine 🎥🅥🅗🅢"
+    }
+  },
+  "67": {
+    "inputs": {
+      "image": "",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  }
+}
