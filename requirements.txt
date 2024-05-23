@@ -1,0 +1,8 @@
+azure-cognitiveservices-speech==1.37.0
+dashscope==1.15.0
+moviepy==2.0.0.dev2
+requests==2.31.0
+streamlit==1.32.2
+urllib3==2.2.1
+websocket-client==1.6.4
+websockets==11.0.3
