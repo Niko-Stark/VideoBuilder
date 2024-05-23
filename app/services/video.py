@@ -25,7 +25,7 @@ def video_creator(directory,imagefile,progress:StepProgress,video_style='sai-ani
         #     prompt.get(key)['inputs']['style'] = video_style 
         if value == 'KSampler':
             prompt.get(key)['inputs']['seed'] = random.randint(10**14, 10**15 - 1)
-            prompt.get(key)['inputs']['cfg'] = 1.5
+            prompt.get(key)['inputs']['cfg'] = 2.0
             progress.steps+= prompt.get(key)['inputs']['steps']
         if value == 'LoadImage':
             filename = os.path.basename(imagefile)
