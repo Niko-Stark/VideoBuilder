@@ -460,15 +460,16 @@ with st.container(border=True):
 start_button = st.button(tr("Generate Video"), use_container_width=True, type="primary")
 if start_button:
     st.session_state["video_file"]=""
-    if not params.video_subject or st.session_state['script_data'] == {}:
+    if not params.video_subject and st.session_state['script_data'] == {}:
         st.error(tr("Video Script and Subject Cannot Both Be Empty"))
         scroll_to_bottom()
         st.stop()
     
-    scroll_to_bottom()
+    # scroll_to_bottom()
 
     video_bar_word=st.empty()
     video_bar=st.progress(0)
+    print("start")
     task_progress = TaskProgress()
     params.video_script = st.session_state['script_data']
 

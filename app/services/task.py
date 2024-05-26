@@ -171,7 +171,7 @@ class task:
             sub_param["positve_prompt"] = prompts[0]
             sub_param["negative_prompt"] = prompts[1]
             prompt_state.update_progress(1)
-            sub_param["storyboard"] = storyboard.storyboard_creator(sub_param["positve_prompt"], sub_param["negative_prompt"],sdxl_state,video_style=self._params.video_style)
+            sub_param["storyboard"] = storyboard.storyboard_creator(self.storyboard_dir, sub_param,sdxl_state,video_style=self._params.video_style)
         
         if "video" not in sub_param or sub_param["video"] == "":
             sub_param["video"] = video.video_creator(self.video_dir,sub_param["storyboard"],video_state)
