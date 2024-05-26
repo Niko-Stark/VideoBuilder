@@ -85,7 +85,7 @@ class task:
             generate_script_state =StepProgress(1,1)
             self._state.append_sub_progress(generate_script_state)
             for i in range(3):
-                script_text = llm.generate_script(self._params.video_subject)
+                script_text = llm.generate_script(self._params.video_subject,self._params.storyboard_num)
                 if script_text !="":
                     break
             if script_text =="":

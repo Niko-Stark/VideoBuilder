@@ -16,6 +16,7 @@ class VideoGenerationMode(str, Enum):
 class VideoParams:
     video_subject: Optional[str] = ""
     video_language: Optional[str] = ""
+    storyboard_num= 1
     video_generation_modes:VideoGenerationMode
     video_style: Optional[str] = ""
 
