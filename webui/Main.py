@@ -51,7 +51,8 @@ def task_init():
         "storyboard":0,
         "video":0,
         "script":False,
-        "add_storyboard":False
+        "add_storyboard":False,
+        "generate_video":False
     }
     
 def session_state_init():
@@ -62,7 +63,8 @@ def session_state_init():
         "storyboard":0,
         "video":0,
         "script":False,
-        "add_storyboard":False
+        "add_storyboard":False,
+        "generate_video":False
     }
 if 'video_subject' not in st.session_state:
     st.session_state['video_subject'] = ''
@@ -307,10 +309,9 @@ with st.container(border=True):
                             with st.spinner("生成分镜图中..."):
                                 value["storyboard"] = ""
                                 value["video"] = ""
-                                # prompts = llm.generate_prompt(value["画面描述"])
-                                # print(value["画面描述"])
-                                # value["positve_prompt"] = prompts[0]
-                                # value["negative_prompt"] = prompts[1]
+                                prompts = llm.generate_prompt(value["画面描述"])
+                                value["positve_prompt"] = prompts[0]
+                                value["negative_prompt"] = prompts[1]
                                 storyboard_dir = utils.make_sub_dir(utils.task_dir(f"{st.session_state['task_id']}"),"storyboard")
                                 value["storyboard"] = storyboard.storyboard_creator(storyboard_dir,value,StepProgress(weight=1),video_style=params.video_style)
                                 st.rerun()
@@ -459,6 +460,8 @@ with st.container(border=True):
 
 start_button = st.button(tr("Generate Video"), use_container_width=True, type="primary")
 if start_button:
+    st.session_state['status']["generate_video"] = True
+if st.session_state['status']["generate_video"]:
     st.session_state["video_file"]=""
     if not params.video_subject and st.session_state['script_data'] == {}:
         st.error(tr("Video Script and Subject Cannot Both Be Empty"))
